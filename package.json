@@ -1,0 +1,16 @@
+{
+  "name": "novatask-monorepo",
+  "version": "1.0.0",
+  "description": "NovaTask - Full-Stack Agile Task Management & Live Intelligence Platform",
+  "private": true,
+  "scripts": {
+    "install:all": "npm --prefix server install && npm --prefix client install",
+    "server": "npm --prefix server start",
+    "client": "npm --prefix client dev",
+    "build": "npm --prefix client run build",
+    "dev": "npx concurrently -n \"BACKEND,FRONTEND\" -c \"magenta.bold,cyan.bold\" \"npm run server\" \"npm run client\""
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
