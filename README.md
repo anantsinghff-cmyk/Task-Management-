@@ -1,115 +1,135 @@
-# NovaTask — Next-Gen Agile Task & Workflow Intelligence Platform
+<h1>Engine.IO</h1>
 
-NovaTask is an advanced, production-grade full-stack task management web application built to elevate personal and team productivity. It goes far beyond standard tutorial apps by integrating a **solid Node.js/Express backend**, **real-time WebSocket synchronization (Socket.io)**, **native SQLite persistence**, **JWT authentication & authorization**, **interactive drag-and-drop Kanban execution**, **subtask checklists with progress tracking**, and a **productivity analytics dashboard**.
+[![Build Status](https://github.com/socketio/socket.io/actions/workflows/ci-engine.io.yml/badge.svg)](https://github.com/socketio/socket.io/actions/workflows/ci-engine.io.yml)
+[![NPM version](https://badge.fury.io/js/engine.io.svg)](https://www.npmjs.com/package/engine.io)
 
----
+Engine.IO is the low-level realtime engine behind [Socket.IO](https://socket.io/).
 
-## 🌟 What Makes NovaTask Different (vs. The Tutorial Video)
+It provides a reliable, bidirectional communication layer between a Node.js server and a client, using HTTP long-polling first and upgrading to better transports when possible, such as WebSocket or WebTransport.
 
-| Feature | YouTube Tutorial (TaskBuddy) | NovaTask Platform |
-| :--- | :--- | :--- |
-| **Backend Architecture** | ❌ None (Local browser state only) | ✅ **Production Express 4 backend** with SQLite & REST API |
-| **Persistence** | ⚠️ In-memory / temporary | ✅ **Persistent SQLite Database** (Built-in Node 24 native engine) |
-| **Authentication** | ❌ No authentication | ✅ **JWT authentication, bcryptjs encryption, profile management & 1-click demo access** |
-| **Real-time Sync** | ❌ No synchronization | ✅ **Bi-directional WebSockets (Socket.io)** updating all connected clients live |
-| **Kanban Board** | ❌ Basic list only | ✅ **Native HTML5 drag-and-drop Kanban** (To Do, In Progress, Review, Completed) |
-| **Subtask Breakdown** | ❌ Single task title only | ✅ **Interactive subtask checklists** with live progress rings & % calculations |
-| **Views** | ❌ Single static view | ✅ **Triple Views**: Kanban Board, Structured Table List, and Analytics Dashboard |
-| **Analytics & Metrics** | ⚠️ Basic count | ✅ **SVG Completion Gauge, overdue alerts, priority breakdown & category distribution** |
-| **Audit Stream** | ❌ None | ✅ **Real-time team activity feed** logging every change and milestone |
-| **Data Export** | ❌ None | ✅ **One-click CSV and JSON data export** |
-| **Aesthetic / Theme** | ⚠️ Basic CSS | ✅ **Dark / Light mode** with glassmorphic tokens, glowing badges, and custom icons |
+**Table of Contents**
 
----
+<!-- TOC -->
+  * [Features](#features)
+  * [Installation](#installation)
+  * [Usage](#usage)
+    * [Basic](#basic)
+    * [With an existing HTTP server](#with-an-existing-http-server)
+    * [Manual request handling](#manual-request-handling)
+  * [Client](#client)
+  * [API](#api)
+  * [License](#license)
+<!-- TOC -->
 
-## 🏗️ System Architecture
+## Features
 
-```
-novatask/
-├── server/                      # Solid Express.js Backend
-│   ├── src/
-│   │   ├── db.js                # Native Node 24 SQLite schema, seeding & activity logger
-│   │   ├── server.js            # Express server + Socket.io WebSocket attachment
-│   │   ├── middleware/
-│   │   │   └── auth.js          # JWT Bearer token authentication middleware
-│   │   └── routes/
-│   │       ├── auth.js          # Signup, Login, Demo Access, Profile routes
-│   │       ├── tasks.js         # Full CRUD, Drag Status, Subtasks, Analytics & Export
-│   │       └── activities.js    # Team activity audit trail stream
-│   ├── novatask.db              # SQLite Database file
-│   └── package.json
-│
-├── client/                      # Modern React + Vite Frontend
-│   ├── src/
-│   │   ├── context/
-│   │   │   ├── AuthContext.jsx  # User session, JWT token state, profile management
-│   │   │   └── SocketContext.jsx# Live WebSocket connection and presence indicators
-│   │   ├── services/
-│   │   │   └── api.js           # Fetch wrapper with auto-auth and error interceptors
-│   │   ├── components/
-│   │   │   ├── Navbar.jsx       # Brand, view switcher, live status, quick actions
-│   │   │   ├── HeroBanner.jsx   # Dynamic greeting, quick metrics, search & filters
-│   │   │   ├── KanbanBoard.jsx  # 4-stage drag-and-drop workflow columns
-│   │   │   ├── TaskCard.jsx     # Priority badges, tags, subtask toggle, due date
-│   │   │   ├── TaskListView.jsx # Table/List view with quick completion toggles
-│   │   │   ├── AnalyticsDashboard.jsx # SVG dial, priority histogram, velocity stats
-│   │   │   ├── TaskModal.jsx    # Create/edit task with subtask builder & tags
-│   │   │   ├── AuthModal.jsx    # Sign in, Sign up, and instant 1-click Demo buttons
-│   │   │   ├── ProfileModal.jsx # Avatar picker & user title editor
-│   │   │   ├── ActivityDrawer.jsx # Slide-out live activity history stream
-│   │   │   └── ToastContainer.jsx # Floating alerts for live sync and actions
-│   │   ├── index.css            # Glassmorphic tokens, animations, responsive rules
-│   │   └── App.jsx
-│   └── package.json
-│
-├── package.json                 # Monorepo root runner
-└── README.md
-```
+- Reliable realtime communication across browsers, networks, proxies, and load balancers
+- Automatic transport upgrade from HTTP long-polling to WebSocket or WebTransport
+- Binary data support
+- Optional HTTP compression and WebSocket per-message deflate
+- Custom request authorization
+- Sticky-session-friendly cookie support
+- Node.js `http.Server` integration
+- TypeScript definitions included
 
----
+## Installation
 
-## 🚀 Getting Started
-
-### 1. Prerequisites
-- **Node.js**: v20+ or v24+ (Node 24 includes the built-in native SQLite engine `node:sqlite`).
-
-### 2. Live Running Instances
-The application is currently active on your local machine:
-- **Frontend Web UI**: [http://localhost:5173](http://localhost:5173)
-- **Backend API & WebSocket Engine**: [http://localhost:5000](http://localhost:5000)
-
-### 3. How to Launch Later
-To start both backend and frontend concurrently in a single terminal:
 ```bash
-cd C:\Users\anant\.gemini\antigravity\scratch\novatask
-npm run dev
+npm install engine.io
 ```
 
-Or run them individually:
-```bash
-# Terminal 1: Backend Server
-cd server
-npm start
+## Usage
 
-# Terminal 2: Frontend Client
-cd client
-npm run dev
+### Basic
+
+```js
+import { listen } from "engine.io";
+
+const server = listen(8080, () => {
+  console.log("listening on port 8080");
+});
+
+server.on("connection", (socket) => {
+  socket.send("hello");
+
+  socket.on("message", (data) => {
+    console.log("received:", data);
+  });
+
+  socket.on("close", () => {
+    console.log("connection closed");
+  });
+});
 ```
 
----
+### With an existing HTTP server
 
-## 🔑 Demo Accounts (Pre-configured)
+```js
+import { createServer } from "node:http";
+import { Server } from "engine.io";
 
-You can click the **"Demo User"** button in the header or in the Sign In modal for instant one-click login:
-- **Alex Rivera** (Product Lead): `alex@novatask.io` / `Password123!`
-- **Sarah Chen** (Senior Engineer): `sarah@novatask.io` / `Password123!`
-- Or register any new custom account via the **"Sign Up"** tab!
+const httpServer = createServer();
+const server = new Server(httpServer);
 
----
+server.on("connection", (socket) => {
+  // ...
+});
 
-## ⚡ Real-Time WebSocket Testing
+httpServer.listen(8080, () => {
+  console.log("listening on port 8080");
+});
+```
 
-Open **two separate browser windows or tabs** side-by-side at `http://localhost:5173`:
-1. Look at the top bar — the green badge will update to **Live Sync (2)**.
-2. In Tab A, drag a task from *To Do* to *In Progress* or create a new task.
-3. In Tab B, watch the card instantly move and a toast notification appear with **zero page refresh required**!
+### Manual request handling
+
+Use this approach when you want full control over how Engine.IO requests are routed.
+
+```js
+import { createServer } from "node:http";
+import { Server } from "engine.io";
+
+const httpServer = createServer();
+const server = new Server();
+
+httpServer.on("request", (req, res) => {
+  server.handleRequest(req, res);
+});
+
+httpServer.on("upgrade", (req, socket, head) => {
+  server.handleUpgrade(req, socket, head);
+});
+
+server.on("connection", (socket) => {
+  // ...
+});
+
+httpServer.listen(8080, () => {
+  console.log("listening on port 8080");
+});
+```
+
+## Client
+
+Engine.IO clients are provided by the [`engine.io-client`](https://www.npmjs.com/package/engine.io-client) package.
+
+```js
+import { Socket } from "engine.io-client";
+
+const socket = new Socket("ws://localhost:8080");
+
+socket.on("open", () => {
+  socket.send("hello");
+});
+
+socket.on("message", (data) => {
+  console.log("received:", data);
+});
+```
+
+## API
+
+See the [API documentation](./docs/API.md) for the full list of available options, methods, events, and properties.
+
+## License
+
+MIT
