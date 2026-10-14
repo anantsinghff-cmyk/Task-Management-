@@ -1,16 +1,19 @@
 {
-  "name": "novatask-monorepo",
+  "name": "novatask-server",
   "version": "1.0.0",
-  "description": "NovaTask - Full-Stack Agile Task Management & Live Intelligence Platform",
-  "private": true,
+  "description": "Solid backend for NovaTask Management with Express, Node SQLite, and Socket.io",
+  "main": "src/server.js",
+  "type": "module",
   "scripts": {
-    "install:all": "npm --prefix server install && npm --prefix client install",
-    "server": "npm --prefix server start",
-    "client": "npm --prefix client dev",
-    "build": "npm --prefix client run build",
-    "dev": "npx concurrently -n \"BACKEND,FRONTEND\" -c \"magenta.bold,cyan.bold\" \"npm run server\" \"npm run client\""
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
   },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "socket.io": "^4.8.1"
   }
 }
