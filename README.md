@@ -1,135 +1,55 @@
-<h1>Engine.IO</h1>
+# es-errors <sup>[![Version Badge][npm-version-svg]][package-url]</sup>
 
-[![Build Status](https://github.com/socketio/socket.io/actions/workflows/ci-engine.io.yml/badge.svg)](https://github.com/socketio/socket.io/actions/workflows/ci-engine.io.yml)
-[![NPM version](https://badge.fury.io/js/engine.io.svg)](https://www.npmjs.com/package/engine.io)
+[![github actions][actions-image]][actions-url]
+[![coverage][codecov-image]][codecov-url]
+[![License][license-image]][license-url]
+[![Downloads][downloads-image]][downloads-url]
 
-Engine.IO is the low-level realtime engine behind [Socket.IO](https://socket.io/).
+[![npm badge][npm-badge-png]][package-url]
 
-It provides a reliable, bidirectional communication layer between a Node.js server and a client, using HTTP long-polling first and upgrading to better transports when possible, such as WebSocket or WebTransport.
+A simple cache for a few of the JS Error constructors.
 
-**Table of Contents**
-
-<!-- TOC -->
-  * [Features](#features)
-  * [Installation](#installation)
-  * [Usage](#usage)
-    * [Basic](#basic)
-    * [With an existing HTTP server](#with-an-existing-http-server)
-    * [Manual request handling](#manual-request-handling)
-  * [Client](#client)
-  * [API](#api)
-  * [License](#license)
-<!-- TOC -->
-
-## Features
-
-- Reliable realtime communication across browsers, networks, proxies, and load balancers
-- Automatic transport upgrade from HTTP long-polling to WebSocket or WebTransport
-- Binary data support
-- Optional HTTP compression and WebSocket per-message deflate
-- Custom request authorization
-- Sticky-session-friendly cookie support
-- Node.js `http.Server` integration
-- TypeScript definitions included
-
-## Installation
-
-```bash
-npm install engine.io
-```
-
-## Usage
-
-### Basic
+## Example
 
 ```js
-import { listen } from "engine.io";
+const assert = require('assert');
 
-const server = listen(8080, () => {
-  console.log("listening on port 8080");
-});
+const Base = require('es-errors');
+const Eval = require('es-errors/eval');
+const Range = require('es-errors/range');
+const Ref = require('es-errors/ref');
+const Syntax = require('es-errors/syntax');
+const Type = require('es-errors/type');
+const URI = require('es-errors/uri');
 
-server.on("connection", (socket) => {
-  socket.send("hello");
-
-  socket.on("message", (data) => {
-    console.log("received:", data);
-  });
-
-  socket.on("close", () => {
-    console.log("connection closed");
-  });
-});
+assert.equal(Base, Error);
+assert.equal(Eval, EvalError);
+assert.equal(Range, RangeError);
+assert.equal(Ref, ReferenceError);
+assert.equal(Syntax, SyntaxError);
+assert.equal(Type, TypeError);
+assert.equal(URI, URIError);
 ```
 
-### With an existing HTTP server
+## Tests
+Simply clone the repo, `npm install`, and run `npm test`
 
-```js
-import { createServer } from "node:http";
-import { Server } from "engine.io";
+## Security
 
-const httpServer = createServer();
-const server = new Server(httpServer);
+Please email [@ljharb](https://github.com/ljharb) or see https://tidelift.com/security if you have a potential security vulnerability to report.
 
-server.on("connection", (socket) => {
-  // ...
-});
-
-httpServer.listen(8080, () => {
-  console.log("listening on port 8080");
-});
-```
-
-### Manual request handling
-
-Use this approach when you want full control over how Engine.IO requests are routed.
-
-```js
-import { createServer } from "node:http";
-import { Server } from "engine.io";
-
-const httpServer = createServer();
-const server = new Server();
-
-httpServer.on("request", (req, res) => {
-  server.handleRequest(req, res);
-});
-
-httpServer.on("upgrade", (req, socket, head) => {
-  server.handleUpgrade(req, socket, head);
-});
-
-server.on("connection", (socket) => {
-  // ...
-});
-
-httpServer.listen(8080, () => {
-  console.log("listening on port 8080");
-});
-```
-
-## Client
-
-Engine.IO clients are provided by the [`engine.io-client`](https://www.npmjs.com/package/engine.io-client) package.
-
-```js
-import { Socket } from "engine.io-client";
-
-const socket = new Socket("ws://localhost:8080");
-
-socket.on("open", () => {
-  socket.send("hello");
-});
-
-socket.on("message", (data) => {
-  console.log("received:", data);
-});
-```
-
-## API
-
-See the [API documentation](./docs/API.md) for the full list of available options, methods, events, and properties.
-
-## License
-
-MIT
+[package-url]: https://npmjs.org/package/es-errors
+[npm-version-svg]: https://versionbadg.es/ljharb/es-errors.svg
+[deps-svg]: https://david-dm.org/ljharb/es-errors.svg
+[deps-url]: https://david-dm.org/ljharb/es-errors
+[dev-deps-svg]: https://david-dm.org/ljharb/es-errors/dev-status.svg
+[dev-deps-url]: https://david-dm.org/ljharb/es-errors#info=devDependencies
+[npm-badge-png]: https://nodei.co/npm/es-errors.png?downloads=true&stars=true
+[license-image]: https://img.shields.io/npm/l/es-errors.svg
+[license-url]: LICENSE
+[downloads-image]: https://img.shields.io/npm/dm/es-errors.svg
+[downloads-url]: https://npm-stat.com/charts.html?package=es-errors
+[codecov-image]: https://codecov.io/gh/ljharb/es-errors/branch/main/graphs/badge.svg
+[codecov-url]: https://app.codecov.io/gh/ljharb/es-errors/
+[actions-image]: https://img.shields.io/endpoint?url=https://github-actions-badge-u3jn4tfpocch.runkit.sh/ljharb/es-errors
+[actions-url]: https://github.com/ljharb/es-errors/actions
